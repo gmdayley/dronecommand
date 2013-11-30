@@ -1,22 +1,78 @@
 body{
     margin:0;
-    background-color: yellowgreen;
+    background: url('inflicted.png');
 }
+button { border:0;}
+input:focus { outline: none; }
+
 
 .container {
     position: relative;
-    margin: 0 auto;
+    margin: 30px auto;
     width: 640px;
     height: 360px;
-    background-color: blue;
+
 }
 
 #droneStream {
     position: absolute;
 }
 
-.controls {
+.top-left {
     position: absolute;
-    width: 640px;
-    height: 360px;
+    top: 0;
+    left: 0;
 }
+
+.top-right {
+    position: absolute;
+    top:0px;
+    right:0px;
+}
+
+.bottom-right {
+    position: absolute;
+    width: 50px;
+    bottom: 0px;
+    right: 0px;
+}
+
+.bottom-left {
+    position: absolute;
+    /*width:100px;*/
+    bottom: 0px;
+    left: 0px;
+}
+
+
+.controls > button {
+    border: 0px none;
+    width: 50px;
+    height: 50px;
+    background: rgba(0,0,0,.4);
+    font-size: 24px;
+    color: #dcdcdc;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top:0;
+    padding-bottom:0;
+    /*margin-right: -4px;*/
+}
+
+.controls > button:hover {
+    background: rgba(255,255,255,.95);
+    color: black;
+    cursor: pointer;
+}
+/*
+.controls > button:active {
+    margin:0;
+    border: none;
+}
+*/
+
+
+.controls > button:focus {
+    outline:none;
+}
+
