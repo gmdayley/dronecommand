@@ -19,28 +19,31 @@ wsCtrl.on('land', function(data){
 
 
 wsCtrl.on('stop', function(data) {
+  console.log('Stop');
   arClient.stop();
 });
 
 wsCtrl.on('up', function(data) {
+  console.log('Up');
   arClient.up(0.3);
 });
 
 wsCtrl.on('down', function(data) {
+  console.log('Down');
   arClient.down(0.3);
 });
 
 wsCtrl.on('flip', function(data) {
+  console.log('Flip');
   arClient.animate('flipLeft', 1000);
 });
-
 
 
 app.configure(function () {
   app.use(express.favicon());
   app.use(express.logger('dev'));
 //  app.use(app.router);
-//  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function () {

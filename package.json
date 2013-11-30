@@ -1,4 +1,10 @@
 {
   "name": "application-name",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "~3.4.5",
+    "socket.io": "~0.9.16",
+    "ar-drone": "~0.3.0",
+    "dronestream": "~1.1.1"
+  }
 }
