@@ -3,32 +3,8 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Drone</title>
-    <script src="/dronestream/nodecopter-client.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="css/drone.css">
 
-    <style>
-        body{
-            margin:0;
-            background-color: yellowgreen;
-        }
-
-        .container {
-            position: relative;
-            margin: 0 auto;
-            width: 640px;
-            height: 360px;
-            background-color: blue;
-        }
-
-        #droneStream {
-            position: absolute;
-        }
-
-        .controls {
-            position: absolute;
-            width: 640px;
-            height: 360px;
-        }
-    </style>
 </head>
 <body>
 
@@ -47,13 +23,16 @@
     </div>
 </div>
 
+
+<script src="/dronestream/nodecopter-client.js" type="text/javascript" charset="utf-8"></script>
+
 <script type="text/javascript" charset="utf-8">
     new NodecopterStream(document.getElementById("droneStream"));
 </script>
 
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="http://localhost:3001/socket.io/socket.io.js"></script>
-<script src="http://localhost:3000/js/drone.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="js/drone.js"></script>
 
 </body>
 </html>

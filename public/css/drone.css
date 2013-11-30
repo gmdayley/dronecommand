@@ -1,0 +1,22 @@
+body{
+    margin:0;
+    background-color: yellowgreen;
+}
+
+.container {
+    position: relative;
+    margin: 0 auto;
+    width: 640px;
+    height: 360px;
+    background-color: blue;
+}
+
+#droneStream {
+    position: absolute;
+}
+
+.controls {
+    position: absolute;
+    width: 640px;
+    height: 360px;
+}
