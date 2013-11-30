@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Stream as module</title>
+    <script src="/dronestream/nodecopter-client.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+
+<div id="droneStream" style="width: 640px; height: 360px">   </div>
+
+<script type="text/javascript" charset="utf-8">
+    new NodecopterStream(document.getElementById("droneStream"));
+</script>
+
+<script src="http://localhost:8090/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://localhost:8090');
+    socket.on('news', function (data) {
+        console.log(data);
+//        socket.emit('my other event', { my: 'data' });
+    });
+</script>
+
+</body>
+</html>
