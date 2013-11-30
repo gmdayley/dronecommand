@@ -49,7 +49,7 @@ app.configure('development', function () {
 });
 
 app.get('/', function(req, res) {
-  res.sendfile("index4.html");
+  res.sendfile("index.html");
 });
 
 require("dronestream").listen(server);

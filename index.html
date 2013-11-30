@@ -1,6 +1,96 @@
+<!doctype html>
 <html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Stream as module</title>
+    <script src="/dronestream/nodecopter-client.js" type="text/javascript" charset="utf-8"></script>
+
+    <style>
+        body{
+            margin:0;
+            background-color: yellowgreen;
+        }
+
+        .container {
+            position: relative;
+            margin: 0 auto;
+            width: 640px;
+            height: 360px;
+            background-color: blue;
+        }
+
+        #droneStream {
+            position: absolute;
+        }
+
+        .controls {
+            position: absolute;
+            width: 640px;
+            height: 360px;
+        }
+    </style>
+</head>
 <body>
-    <h1>Smile!</h1>
-    <img src="http://localhost:9080">
+
+<div class="container">
+
+    <div id="droneStream" style="width: 640px; height: 360px"></div>
+
+    <div class="controls">
+        <button onclick="takeOff()">TakeOff!!</button>
+        <button onclick="land()">Land!!</button>
+        <button onmousedown="up()" onmouseup="stop()">UP</button>
+        <button onclick="flip()">Flip</button>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8">
+    new NodecopterStream(document.getElementById("droneStream"));
+</script>
+
+<script src="http://localhost:3001/socket.io/socket.io.js"></script>
+<script>
+
+    var socket = io.connect('http://localhost:3001');
+    socket.on('ack', function (data) {
+        console.log(data);
+//        socket.emit('my other event', { my: 'data' });
+    });
+
+
+    function takeOff(){
+        socket.emit('drone-command', {
+            command: 'takeoff'
+        });
+    }
+    function land(){
+        socket.emit('drone-command', {
+            command: 'land'
+        });
+    }
+
+    function up(){
+        console.log('UP');
+        socket.emit('drone-command', {
+            command: 'up'
+        });
+    }
+
+    function stop(){
+        console.log('STOP');
+        socket.emit('drone-command', {
+            command: 'stop'
+        });
+    }
+
+    function flip(){
+        socket.emit('drone-command', {
+            command: 'flip'
+        });
+    }
+</script>
+
 </body>
 </html>
