@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Drone</title>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/drone.css">
 
 </head>
@@ -24,9 +24,16 @@
         <button data-drone="spinCW"><i class="fa fa-rotate-right"></i></button>
     </div>
 
+    <div class="controls top-right">
+        <button data-drone="up"><i class="fa fa-chevron-circle-up"></i></button>
+        <button data-drone="down"><i class="fa fa-chevron-circle-down"></i></button>
+    </div>
+
     <div class="controls bottom-right">
-        <button data-drone="up"><i class="fa fa-arrow-up"></i></button>
-        <button data-drone="down"><i class="fa fa-arrow-down"></i></button>
+        <button data-drone="front"><i class="fa fa-arrow-up"></i></button>
+        <button data-drone="back"><i class="fa fa-arrow-down"></i></button>
+        <button data-drone="left"><i class="fa fa-arrow-left"></i></button>
+        <button data-drone="right"><i class="fa fa-arrow-right"></i></button>
     </div>
 
 </div>
@@ -38,7 +45,7 @@
     new NodecopterStream(document.getElementById("droneStream"));
 </script>
 
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="js/jquery.js"></script>
 <script src="http://localhost:3001/socket.io/socket.io.js"></script>
 <script src="js/drone.js"></script>
 

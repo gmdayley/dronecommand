@@ -5,6 +5,8 @@ var express = require('express'),
   wsCtrl = require('./ws-controller'),
   arClient = require('ar-drone').createClient();
 
+var SPEED = 0.4;
+
 wsCtrl.start();
 
 wsCtrl.on('takeoff', function(data){
@@ -17,7 +19,6 @@ wsCtrl.on('land', function(data){
   arClient.land();
 });
 
-
 wsCtrl.on('stop', function(data) {
   console.log('Stop');
   arClient.stop();
@@ -25,17 +26,47 @@ wsCtrl.on('stop', function(data) {
 
 wsCtrl.on('up', function(data) {
   console.log('Up');
-  arClient.up(0.3);
+  arClient.up(SPEED);
 });
 
 wsCtrl.on('down', function(data) {
   console.log('Down');
-  arClient.down(0.3);
+  arClient.down(SPEED);
+});
+
+wsCtrl.on('front', function(data) {
+  console.log('front');
+  arClient.front(SPEED);
+});
+
+wsCtrl.on('back', function(data) {
+  console.log('back');
+  arClient.back(SPEED);
+});
+
+wsCtrl.on('left', function(data) {
+  console.log('left');
+  arClient.left(SPEED);
+});
+
+wsCtrl.on('right', function(data) {
+  console.log('right');
+  arClient.right(SPEED);
+});
+
+wsCtrl.on('spinCW', function(data) {
+  console.log('spinCW');
+  arClient.clockwise(SPEED);
+});
+
+wsCtrl.on('spinCCW', function(data) {
+  console.log('spinCCW');
+  arClient.counterClockwise(SPEED);
 });
 
 wsCtrl.on('flip', function(data) {
   console.log('Flip');
-  arClient.animate('flipLeft', 1000);
+  arClient.animate('flipLeft', 500);
 });
 
 

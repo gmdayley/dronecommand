@@ -4,6 +4,10 @@ var takeoffBtn = $('button[data-drone="takeoff"]');
 var landBtn = $('button[data-drone="land"]');
 var upBtn = $('button[data-drone="up"]');
 var downBtn = $('button[data-drone="down"]');
+var frontBtn = $('button[data-drone="front"]');
+var backBtn = $('button[data-drone="back"]');
+var leftBtn = $('button[data-drone="left"]');
+var rightBtn = $('button[data-drone="right"]');
 var flipBtn = $('button[data-drone="flip"]');
 var spinClockwiseBtn = $('button[data-drone="spinCW"]');
 var spinCounterClockwiseBtn = $('button[data-drone="spinCCW"]');
@@ -14,7 +18,7 @@ socket.on('ack', function (data) {
   console.log(data);
 });
 
-[upBtn, downBtn, spinClockwiseBtn, spinCounterClockwiseBtn].forEach(function(btn) {
+[upBtn, downBtn, frontBtn, backBtn, leftBtn, rightBtn, spinClockwiseBtn, spinCounterClockwiseBtn].forEach(function(btn) {
   console.log('stop');
   btn.mouseup(function() {
     socket.emit('drone-command', {
@@ -44,6 +48,30 @@ upBtn.mousedown(function() {
 downBtn.mousedown(function() {
   socket.emit('drone-command', {
     command: 'down'
+  });
+});
+
+frontBtn.mousedown(function() {
+  socket.emit('drone-command', {
+    command: 'front'
+  });
+});
+
+backBtn.mousedown(function() {
+  socket.emit('drone-command', {
+    command: 'back'
+  });
+});
+
+leftBtn.mousedown(function() {
+  socket.emit('drone-command', {
+    command: 'left'
+  });
+});
+
+rightBtn.mousedown(function() {
+  socket.emit('drone-command', {
+    command: 'right'
   });
 });
 
