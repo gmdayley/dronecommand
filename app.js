@@ -9,6 +9,11 @@ var SPEED = 0.4;
 
 wsCtrl.start();
 
+arClient.on('navdata', function(data) {
+//  console.log(data);
+  wsCtrl.data(data);
+});
+
 wsCtrl.on('takeoff', function(data){
   console.log('TakeOff');
   arClient.takeoff();
@@ -67,6 +72,11 @@ wsCtrl.on('spinCCW', function(data) {
 wsCtrl.on('flip', function(data) {
   console.log('Flip');
   arClient.animate('flipLeft', 500);
+});
+
+wsCtrl.on('disableEmergency', function(data) {
+  console.log('DisableEmergency');
+  arClient.disableEmergency();
 });
 
 

@@ -2,10 +2,9 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Drone</title>
+    <title>DroneCommand</title>
     <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/drone.css">
-
 </head>
 <body>
 
@@ -16,12 +15,14 @@
     <div class="controls top-left">
         <button data-drone="takeoff"><i class="fa fa-rocket"></i></button>
         <button data-drone="land"><i class="fa fa-stop"></i></button>
-        <button data-drone="flip"><i class="fa fa-retweet"></i></button>
+        <button data-drone="disableEmergency"><i class="fa fa-medkit"></i></button>
+        <button data-drone="tweet"><i class="fa fa-twitter"></i></button>
     </div>
 
     <div class="controls bottom-left">
         <button data-drone="spinCCW"><i class="fa fa-rotate-left"></i></button>
         <button data-drone="spinCW"><i class="fa fa-rotate-right"></i></button>
+        <button data-drone="flip"><i class="fa fa-retweet"></i></button>
     </div>
 
     <div class="controls top-right">
@@ -36,8 +37,10 @@
         <button data-drone="right"><i class="fa fa-arrow-right"></i></button>
     </div>
 
+    <div class="info top-middle">
+        <div class="altitude">???</div>
+    </div>
 </div>
-
 
 <script src="/dronestream/nodecopter-client.js" type="text/javascript" charset="utf-8"></script>
 

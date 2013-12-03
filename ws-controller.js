@@ -1,9 +1,7 @@
 var events = require('events');
 var emitter = new events.EventEmitter();
 
-var app = require('http').createServer(function(req, res) {
-  // nothing yet
-});
+var app = require('http').createServer();
 
 var io = require('socket.io').listen(app),
     fs = require('fs');
@@ -16,12 +14,16 @@ io.sockets.on('connection', function(socket) {
   });
 });
 
+module.exports = {
+  start:  function(port) {
+    app.listen(port || 3001);
+  },
 
-exports.start = function(port) {
-  app.listen(port || 3001);
+  on: function(str, cb) {
+    emitter.on(str, cb);
+  },
+
+  data: function(data) {
+    io.sockets.emit('drone-data', data);
+  }
 };
-
-exports.on = function(str, cb) {
-  emitter.on(str, cb);
-};
-

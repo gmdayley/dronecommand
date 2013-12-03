@@ -1,6 +1,7 @@
 body{
     margin:0;
     background: url('inflicted.png');
+    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
 }
 button { border:0;}
 input:focus { outline: none; }
@@ -11,7 +12,6 @@ input:focus { outline: none; }
     margin: 30px auto;
     width: 640px;
     height: 360px;
-
 }
 
 #droneStream {
@@ -20,6 +20,7 @@ input:focus { outline: none; }
 
 .top-left {
     position: absolute;
+    width: 150px;
     top: 0;
     left: 0;
 }
@@ -27,24 +28,38 @@ input:focus { outline: none; }
 .top-right {
     position: absolute;
     width:50px;
-    top:0px;
-    right:0px;
+    top: 0;
+    right: 0;
 }
 
 .bottom-right {
     position: absolute;
     width: 104px;
-    bottom: 0px;
+    bottom: 0;
     right: -4px;
 }
 
 .bottom-left {
     position: absolute;
     /*width:100px;*/
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
 }
 
+.top-middle {
+    position: relative;
+    margin: 0 auto;
+    width: 100px;
+    top: 0;
+
+}
+
+.info {
+    color: white;
+    padding: 5px;
+    background: rgba(0,120,0,.25);
+    text-align: center;
+}
 
 .controls > button {
     border: 0px none;
