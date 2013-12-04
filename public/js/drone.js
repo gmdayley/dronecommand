@@ -1,4 +1,5 @@
 var altitude = $('div.altitude');
+var battery = $('div.battery');
 
 var takeoffBtn = $('button[data-drone="takeoff"]');
 var landBtn = $('button[data-drone="land"]');
@@ -20,6 +21,12 @@ socket.on('ack', function (data) {
   console.log(data);
 });
 
+socket.on('drone-data', function(data) {
+//  console.log(data);
+  altitude.text(data.demo.altitude.toFixed(2) + ' m');
+  battery.text(data.demo.batteryPercentage.toFixed(2) + '%');
+});
+
 [upBtn, downBtn, frontBtn, backBtn, leftBtn, rightBtn, spinClockwiseBtn, spinCounterClockwiseBtn].forEach(function(btn) {
   btn.mouseup(function() {
     socket.emit('drone-command', {
@@ -27,6 +34,7 @@ socket.on('ack', function (data) {
     });
   })
 });
+
 
 takeoffBtn.click(function() {
   socket.emit('drone-command', {
@@ -101,15 +109,104 @@ spinCounterClockwiseBtn.mousedown(function() {
   });
 });
 
-socket.on('drone-data', function(data) {
-//  console.log(data);
-  altitude.text(data.demo.altitude);
-//  altitude.text(data.demo.batteryPercentage);
-});
-
-tweetBtn.click(function(e){
+tweetBtn.click(function(e) {
   console.log($('#droneStream').find('canvas')[0].toDataURL("image/png"));
   // TODO: Implement
+});
+
+
+$(document).keyup(function(e) {
+  switch(e.keyCode) {
+    case 37:
+    case 38:
+    case 39:
+    case 40:
+    case 65:
+    case 68:
+    case 83:
+    case 87:
+      socket.emit('drone-command', {
+        command: 'stop'
+     });
+  }
+});
+
+var _isOn = false;
+$(document).keydown(function(e) {
+  console.log(e.keyCode);
+
+  switch(e.keyCode) {
+    case 13:
+      socket.emit('drone-command', {
+        command: 'disableEmergency'
+      });
+      break;
+    case 16:
+      socket.emit('drone-command', {
+        command: 'flip'
+      });
+      break;
+    case 32:
+      socket.emit('drone-command', {
+        command: (_isOn)? 'takeoff' : 'land'
+      });
+      _isOn = !(_isOn);
+      break;
+    case 37:
+      socket.emit('drone-command', {
+        command: 'left'
+      });
+      break;
+    case 38:
+      socket.emit('drone-command', {
+        command: 'front'
+      });
+      break;
+    case 39:
+      socket.emit('drone-command', {
+        command: 'right'
+      });
+      break;
+    case 40:
+      socket.emit('drone-command', {
+        command: 'back'
+      });
+      break;
+    case 65:
+      socket.emit('drone-command', {
+        command: 'spinCW'
+      });
+      break;
+    case 68:
+      socket.emit('drone-command', {
+        command: 'spinCCW'
+      });
+      break;
+    case 70:
+      socket.emit('drone-command', {
+        command: 'fireLeft'
+      });
+      break;
+    case 72:
+      $('div.help').toggleClass('show');
+      break;
+    case 74:
+      socket.emit('drone-command', {
+        command: 'fireRight'
+      });
+      break;
+    case 83:
+      socket.emit('drone-command', {
+        command: 'down'
+      });
+      break;
+    case 87:
+      socket.emit('drone-command', {
+        command: 'up'
+      });
+      break;
+    default:
+  }
 });
 
 

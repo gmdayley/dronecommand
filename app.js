@@ -79,11 +79,19 @@ wsCtrl.on('disableEmergency', function(data) {
   arClient.disableEmergency();
 });
 
+wsCtrl.on('fireLeft', function(data) {
+  console.log('Fire Left');
+  arClient.animateLeds('leftMissile', 5, 2);
+});
+
+wsCtrl.on('fireRight', function(data) {
+  console.log('Fire Right');
+  arClient.animateLeds('rightMissile', 5, 2);
+});
 
 app.configure(function () {
   app.use(express.favicon());
   app.use(express.logger('dev'));
-//  app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
