@@ -27,6 +27,7 @@ socket.on('drone-data', function(data) {
   battery.text(data.demo.batteryPercentage.toFixed(2) + '%');
 });
 
+
 [upBtn, downBtn, frontBtn, backBtn, leftBtn, rightBtn, spinClockwiseBtn, spinCounterClockwiseBtn].forEach(function(btn) {
   btn.mouseup(function() {
     socket.emit('drone-command', {
@@ -116,6 +117,8 @@ tweetBtn.click(function(e) {
 
 
 $(document).keyup(function(e) {
+  _keyDown[e.keyCode] = false;
+
   switch(e.keyCode) {
     case 37:
     case 38:
@@ -132,80 +135,86 @@ $(document).keyup(function(e) {
 });
 
 var _isOn = false;
-$(document).keydown(function(e) {
-  console.log(e.keyCode);
+var _keyDown = {};
 
-  switch(e.keyCode) {
-    case 13:
-      socket.emit('drone-command', {
-        command: 'disableEmergency'
-      });
-      break;
-    case 16:
-      socket.emit('drone-command', {
-        command: 'flip'
-      });
-      break;
-    case 32:
-      socket.emit('drone-command', {
-        command: (_isOn)? 'takeoff' : 'land'
-      });
-      _isOn = !(_isOn);
-      break;
-    case 37:
-      socket.emit('drone-command', {
-        command: 'left'
-      });
-      break;
-    case 38:
-      socket.emit('drone-command', {
-        command: 'front'
-      });
-      break;
-    case 39:
-      socket.emit('drone-command', {
-        command: 'right'
-      });
-      break;
-    case 40:
-      socket.emit('drone-command', {
-        command: 'back'
-      });
-      break;
-    case 65:
-      socket.emit('drone-command', {
-        command: 'spinCW'
-      });
-      break;
-    case 68:
-      socket.emit('drone-command', {
-        command: 'spinCCW'
-      });
-      break;
-    case 70:
-      socket.emit('drone-command', {
-        command: 'fireLeft'
-      });
-      break;
-    case 72:
-      $('div.help').toggleClass('show');
-      break;
-    case 74:
-      socket.emit('drone-command', {
-        command: 'fireRight'
-      });
-      break;
-    case 83:
-      socket.emit('drone-command', {
-        command: 'down'
-      });
-      break;
-    case 87:
-      socket.emit('drone-command', {
-        command: 'up'
-      });
-      break;
-    default:
+$(document).keydown(function(e) {
+//  console.log(e.keyCode);
+
+  if(!_keyDown[e.keyCode]) {
+    _keyDown[e.keyCode] = true;
+
+    switch(e.keyCode) {
+      case 13:
+        socket.emit('drone-command', {
+          command: 'disableEmergency'
+        });
+        break;
+      case 16:
+        socket.emit('drone-command', {
+          command: 'flip'
+        });
+        break;
+      case 32:
+        socket.emit('drone-command', {
+          command: (_isOn)? 'takeoff' : 'land'
+        });
+        _isOn = !(_isOn);
+        break;
+      case 37:
+        socket.emit('drone-command', {
+          command: 'left'
+        });
+        break;
+      case 38:
+        socket.emit('drone-command', {
+          command: 'front'
+        });
+        break;
+      case 39:
+        socket.emit('drone-command', {
+          command: 'right'
+        });
+        break;
+      case 40:
+        socket.emit('drone-command', {
+          command: 'back'
+        });
+        break;
+      case 65:
+        socket.emit('drone-command', {
+          command: 'spinCW'
+        });
+        break;
+      case 68:
+        socket.emit('drone-command', {
+          command: 'spinCCW'
+        });
+        break;
+      case 70:
+        socket.emit('drone-command', {
+          command: 'fireLeft'
+        });
+        break;
+      case 72:
+        $('div.help').toggleClass('show');
+        break;
+      case 74:
+        socket.emit('drone-command', {
+          command: 'fireRight'
+        });
+        break;
+      case 83:
+        socket.emit('drone-command', {
+          command: 'down'
+        });
+        break;
+      case 87:
+        socket.emit('drone-command', {
+          command: 'up'
+        });
+        break;
+      default:
+    }
   }
 });
 
