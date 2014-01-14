@@ -25,6 +25,15 @@ socket.on('drone-data', function(data) {
 //  console.log(data);
   altitude.text(data.demo.altitude.toFixed(2) + ' m');
   battery.text(data.demo.batteryPercentage.toFixed(2) + '%');
+
+  var canvas = $('#droneStream canvas')[0]
+  var target = new TargetMotion(canvas);
+  motion.go(socket);
+
+  var mask = motion.getMask();
+  var maskDiv = document.getElementById('mask');
+  maskDiv.appendChild(mask.canvas);
+
 });
 
 [upBtn, downBtn, frontBtn, backBtn, leftBtn, rightBtn, spinClockwiseBtn, spinCounterClockwiseBtn].forEach(function(btn) {

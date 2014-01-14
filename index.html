@@ -9,8 +9,9 @@
 <body>
 
 <div class="container">
-
+    <div class="crosshairs"></div>
     <div id="droneStream" style="width: 640px; height: 360px"></div>
+    <div id="mask" style="width: 640px; height: 360px"></div>
 
     <div class="controls top-left">
         <button data-drone="takeoff"><i class="fa fa-rocket"></i></button>
@@ -69,6 +70,7 @@
 <script src="js/jquery.js"></script>
 <script src="http://localhost:3001/socket.io/socket.io.js"></script>
 <script src="js/drone.js"></script>
+<script src="js/target-motion.js"></script>
 
 </body>
 </html>
