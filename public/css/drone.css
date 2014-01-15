@@ -118,3 +118,17 @@ input:focus { outline: none; }
     outline:none;
 }
 
+.crosshairs {
+    border: 2px solid red;
+    border-radius: 25px;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    transform: translate(-20px, -20px);
+    -webkit-transform: translate(-20px, -20px);
+    z-index: 5000;
+
+    -webkit-transition: all 250ms ease-in-out;
+    -moz-transition: all 250ms ease-in-out;
+    -o-transition: all 250ms ease-in-out;
+}

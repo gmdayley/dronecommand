@@ -15,25 +15,18 @@ var spinClockwiseBtn = $('button[data-drone="spinCW"]');
 var spinCounterClockwiseBtn = $('button[data-drone="spinCCW"]');
 var tweetBtn = $('button[data-drone="tweet"]');
 
+var targettingInitialized = false;
 
 var socket = io.connect('http://localhost:3001');
 socket.on('ack', function (data) {
-  console.log(data);
+//  console.log(data);
 });
 
 socket.on('drone-data', function(data) {
 //  console.log(data);
   altitude.text(data.demo.altitude.toFixed(2) + ' m');
   battery.text(data.demo.batteryPercentage.toFixed(2) + '%');
-
-  var canvas = $('#droneStream canvas')[0]
-  var target = new TargetMotion(canvas);
-  motion.go(socket);
-
-  var mask = motion.getMask();
-  var maskDiv = document.getElementById('mask');
-  maskDiv.appendChild(mask.canvas);
-
+  if (!targettingInitialized) initTargetting();
 });
 
 [upBtn, downBtn, frontBtn, backBtn, leftBtn, rightBtn, spinClockwiseBtn, spinCounterClockwiseBtn].forEach(function(btn) {
@@ -130,6 +123,13 @@ $(document).keyup(function(e) {
     case 38:
     case 39:
     case 40:
+    case 49:
+    case 50:
+    case 51:
+    case 52:
+    case 53:
+    case 54:
+    case 55:
     case 65:
     case 68:
     case 83:
@@ -181,6 +181,39 @@ $(document).keydown(function(e) {
         command: 'back'
       });
       break;
+    case 49:
+      target.setMode(target.MODE.TARGET);
+      break;
+    case 50:
+      socket.emit('drone-command', {
+        command: 'back'
+      });
+      break;
+    case 51:
+      socket.emit('drone-command', {
+        command: 'back'
+      });
+      break;
+    case 52:
+      socket.emit('drone-command', {
+        command: 'back'
+      });
+      break;
+    case 53:
+      socket.emit('drone-command', {
+        command: 'back'
+      });
+      break;
+    case 54:
+      socket.emit('drone-command', {
+        command: 'back'
+      });
+      break;
+    case 55:
+      socket.emit('drone-command', {
+        command: 'back'
+      });
+      break;
     case 65:
       socket.emit('drone-command', {
         command: 'spinCW'
@@ -218,4 +251,15 @@ $(document).keydown(function(e) {
   }
 });
 
+var target;
+function initTargetting() {
+  targettingInitialized = true;
 
+  var canvas = $('#droneStream canvas')[0];
+  target = new TargetMotion(canvas);
+  target.go(socket);
+
+  var mask = target.getMask();
+  var maskDiv = document.getElementById('mask');
+  maskDiv.appendChild(mask.canvas);
+}

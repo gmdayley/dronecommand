@@ -22,38 +22,54 @@ var _serv = {
   yDeg: 180
 }
 
-var TargetMotion = function(src) {
+var modes = {
+  TARGET: 1,
+  DIFF: 2,
+  ISOLATE: 3,
+  HEATMAP: 4,
+  HEATMAP_OLD: 5,
+  TARGET_OVERLAY: 6
+}
 
-  var width = src.width;
-  var height = src.height;
+var TargetMotion = function(video) {
 
+  var width = video.width;
+  var height = video.height;
+
+  var src = createCanvas(width, height);
   var mask = createCanvas(width, height);
 
   // --- Public Functions ------------------------------------------------------
-
-  function go(socket) {
-    setTimeout(function() {
-      update(socket);
-      go(socket);
-    }, 1000 / 10);
-  }
 
   function getMask() {
     return mask;
   }
 
-  // --- Private Functions -----------------------------------------------------
-
-  function createCanvas(width, height) {
-    var c = {};
-    c.canvas = document.createElement('canvas');
-    c.ctx = c.canvas.getContext('2d');
-    c.canvas.width = width;
-    c.canvas.height = height;
-    return c;
+  var mode = target;
+  function setMode(mode) {
+    switch(mode) {
+      case modes.TARGET:
+        mode = target;
+        break;
+      case modes.DIFF:
+        mode = diff;
+        break;
+      case modes.ISOLATE:
+        mode = isolate;
+        break;
+      case modes.HEATMAP:
+        mode = heatmap;
+        break;
+      case modes.HEATMAP_OLD:
+        mode = heatmapOld;
+        break;
+      case modes.TARGET_OVERLAY:
+        mode = targetOverlay;
+        break;
+    }
   }
 
-  function update(socket) {
+  function go(socket) {
     /* width
      * height
      * 4  - one value for each: r g b a
@@ -79,16 +95,24 @@ var TargetMotion = function(src) {
     src.data = src.ctx.getImageData(0, 0, width, height);
 
     mask.data = src.ctx.createImageData(width, height);
-//    diff(src, mask);
-//    isolate(src, mask, rgb);
-//    heatmapOld(src, mask, scores, rgb);
-//    heatmap(src, mask, scores, rgb);
-    var tgt = target(src, mask, scores, scores2, rgb);
+    var tgt = mode(src, mask, rgb, scores, scores2);
     if (socket) socket.emit('target', tgt);
 
     mask.ctx.putImageData(mask.data, 0, 0);
+    go(socket);
   }
 
+
+  // --- Private Functions -----------------------------------------------------
+
+  function createCanvas(width, height) {
+    var c = {};
+    c.canvas = document.createElement('canvas');
+    c.ctx = c.canvas.getContext('2d');
+    c.canvas.width = width;
+    c.canvas.height = height;
+    return c;
+  }
 
   // Output formats ------------------------------------------------------------
 
@@ -146,7 +170,7 @@ var TargetMotion = function(src) {
    * @param scores
    * @param rgb
    */
-  function heatmapOld(src, mask, scores, rgb) {
+  function heatmapOld(src, mask, rgb, scores) {
     var tHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
     for (var i = 0; i < (src.data.data.length / 4); ++i) {
@@ -190,7 +214,7 @@ var TargetMotion = function(src) {
    * @param scores
    * @param rgb
    */
-  function heatmap(src, mask, scores, rgb) {
+  function heatmap(src, mask, rgb, scores) {
     var tHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
     for (var i = 0; i < (src.data.data.length / 4); ++i) {
@@ -234,7 +258,7 @@ var TargetMotion = function(src) {
    * @param scores
    * @param rgb
    */
-  function targetOverlay(src, mask, scores, scores2, rgb) {
+  function targetOverlay(src, mask, rgb, scores, scores2) {
     var crosshairs = document.getElementsByClassName('crosshairs')[0];
 
     console.time('target');
@@ -313,7 +337,7 @@ var TargetMotion = function(src) {
    * @param scores
    * @param rgb
    */
-  function target(src, mask, scores, scores2, rgb) {
+  function target(src, mask, rgb, scores, scores2) {
     var crosshairs = document.getElementsByClassName('crosshairs')[0];
 
     var tHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
@@ -443,6 +467,8 @@ var TargetMotion = function(src) {
 
   return {
     go: go,
-    getMask: getMask
+    getMask: getMask,
+    setMode: setMode,
+    MODE: modes
   }
 }
