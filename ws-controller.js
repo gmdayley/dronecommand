@@ -6,6 +6,7 @@ var app = require('http').createServer();
 var io = require('socket.io').listen(app),
     fs = require('fs');
 
+io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
   socket.emit('ack', {});
 

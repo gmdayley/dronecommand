@@ -19,6 +19,13 @@ input:focus { outline: none; }
     position: absolute;
 }
 
+#mask {
+    position: absolute;
+    width: 640px;
+    height: 360px;
+    z-index: 6;
+}
+
 .top-left {
     position: absolute;
     width: 150px;
@@ -119,7 +126,7 @@ input:focus { outline: none; }
 }
 
 .crosshairs {
-    border: 2px solid red;
+    border: 3px double red;
     border-radius: 25px;
     position: absolute;
     width: 40px;
@@ -128,7 +135,8 @@ input:focus { outline: none; }
     -webkit-transform: translate(-20px, -20px);
     z-index: 5000;
 
-    -webkit-transition: all 250ms ease-in-out;
-    -moz-transition: all 250ms ease-in-out;
-    -o-transition: all 250ms ease-in-out;
+    -webkit-transition: all 500ms ease-in-out;
+    -moz-transition: all 500ms ease-in-out;
+    -o-transition: all 500ms ease-in-out;
 }
+

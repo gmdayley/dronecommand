@@ -19,7 +19,7 @@ var targettingInitialized = false;
 
 var socket = io.connect('http://localhost:3001');
 socket.on('ack', function (data) {
-//  console.log(data);
+  console.log(data);
 });
 
 socket.on('drone-data', function(data) {
@@ -118,17 +118,13 @@ tweetBtn.click(function(e) {
 
 
 $(document).keyup(function(e) {
+  _keyDown[e.keyCode] = false;
+
   switch(e.keyCode) {
     case 37:
     case 38:
     case 39:
     case 40:
-    case 49:
-    case 50:
-    case 51:
-    case 52:
-    case 53:
-    case 54:
     case 55:
     case 65:
     case 68:
@@ -141,8 +137,10 @@ $(document).keyup(function(e) {
 });
 
 var _isOn = false;
+var _keyDown = {};
+
 $(document).keydown(function(e) {
-  console.log(e.keyCode);
+//  console.log(e.keyCode);
 
   switch(e.keyCode) {
     case 13:
@@ -182,37 +180,22 @@ $(document).keydown(function(e) {
       });
       break;
     case 49:
-      target.setMode(target.MODE.TARGET);
+      target.setMode(target.MODE.DIFF);
       break;
     case 50:
-      socket.emit('drone-command', {
-        command: 'back'
-      });
+      target.setMode(target.MODE.ISOLATE);
       break;
     case 51:
-      socket.emit('drone-command', {
-        command: 'back'
-      });
+      target.setMode(target.MODE.HEATMAP);
       break;
     case 52:
-      socket.emit('drone-command', {
-        command: 'back'
-      });
+      target.setMode(target.MODE.HEATMAP_OLD);
       break;
     case 53:
-      socket.emit('drone-command', {
-        command: 'back'
-      });
+      target.setMode(target.MODE.TARGET_OVERLAY);
       break;
     case 54:
-      socket.emit('drone-command', {
-        command: 'back'
-      });
-      break;
-    case 55:
-      socket.emit('drone-command', {
-        command: 'back'
-      });
+      target.setMode(target.MODE.TARGET);
       break;
     case 65:
       socket.emit('drone-command', {

@@ -8,7 +8,10 @@
 //var rgb = {r: 85, g: 123, b: 95}; // Green shirt on Bus
 //var rgb = {r: 255, g: 255, b: 255}; // White
 //var rgb = {r: 247, g: 255, b: 40}; // Tennis Ball in the light
-var rgb = {r: 190, g: 212, b: 141}; // Tennis Ball in the light
+//var rgb = {r: 190, g: 212, b: 141}; // Tennis Ball in the light
+//var rgb = {r: 146, g: 85, b: 95}; // Vivint bag in hotel room
+//var rgb = {r: 116, g: 46, b: 7}; // Vivint shirt in the gym
+var rgb = {r: 36, g: 85, b: 96}; // Green shirt in the room
 
 //var hsl = [3, 0, 40];
 var diffMult = [1000, 10, 100];
@@ -22,16 +25,16 @@ var _serv = {
   yDeg: 180
 }
 
-var modes = {
-  TARGET: 1,
-  DIFF: 2,
-  ISOLATE: 3,
-  HEATMAP: 4,
-  HEATMAP_OLD: 5,
-  TARGET_OVERLAY: 6
-}
-
 var TargetMotion = function(video) {
+
+  var modes = {
+    TARGET: target,
+    DIFF: diff,
+    ISOLATE: isolate,
+    HEATMAP: heatmapBW,
+    HEATMAP_OLD: heatmapOld,
+    TARGET_OVERLAY: targetOverlay
+  }
 
   var width = video.width;
   var height = video.height;
@@ -45,28 +48,14 @@ var TargetMotion = function(video) {
     return mask;
   }
 
-  var mode = target;
-  function setMode(mode) {
-    switch(mode) {
-      case modes.TARGET:
-        mode = target;
-        break;
-      case modes.DIFF:
-        mode = diff;
-        break;
-      case modes.ISOLATE:
-        mode = isolate;
-        break;
-      case modes.HEATMAP:
-        mode = heatmap;
-        break;
-      case modes.HEATMAP_OLD:
-        mode = heatmapOld;
-        break;
-      case modes.TARGET_OVERLAY:
-        mode = targetOverlay;
-        break;
-    }
+  var mode = modes.TARGET;
+  function setMode(m) {
+    console.log(m);
+    mode = m;
+  }
+
+  function getMode() {
+    return mode;
   }
 
   function go(socket) {
@@ -95,11 +84,15 @@ var TargetMotion = function(video) {
     src.data = src.ctx.getImageData(0, 0, width, height);
 
     mask.data = src.ctx.createImageData(width, height);
-    var tgt = mode(src, mask, rgb, scores, scores2);
+    var m = getMode();
+    var tgt = m(src, mask, rgb, scores, scores2);
     if (socket) socket.emit('target', tgt);
 
     mask.ctx.putImageData(mask.data, 0, 0);
-    go(socket);
+
+    setTimeout(function timed() {
+      go(socket);
+    }, 100);
   }
 
 
@@ -117,17 +110,26 @@ var TargetMotion = function(video) {
   // Output formats ------------------------------------------------------------
 
   /**
+   * Mode for debugging;
+   */
+  function debug() {
+    console.log('DEBUG: i have been run');
+  }
+
+  /**
    *
    * @param src
    * @param mask
    */
   function diff(src, mask) {
+    if (!src.prev) src.prev = src.data;
     for (var i = 0; i < (src.data.data.length / 4); ++i) {
       mask.data.data[4 * i] = abs(src.data.data[4 * i] - src.prev.data[4 * 1]);
       mask.data.data[4 * i + 1] = abs(src.data.data[4 * i + 1] - src.prev.data[4 * 1 + 1]);
       mask.data.data[4 * i + 2] = abs(src.data.data[4 * i + 2] - src.prev.data[4 * 1 + 2]);
       mask.data.data[4 * i + 3] = 0xFF;
     }
+    src.prev = src.data;
   }
 
   /**
@@ -247,6 +249,50 @@ var TargetMotion = function(video) {
       mask.data.data[4 * i] = Math.max(0, 255 - color);
       mask.data.data[4 * i + 1] = 256 - abs(color - 256);
       mask.data.data[4 * i + 2] = Math.max(0, color - 256);
+      mask.data.data[4 * i + 3] = 0xFF;
+    }
+  }
+
+  /**
+   *
+   * @param src
+   * @param mask
+   * @param scores
+   * @param rgb
+   */
+  function heatmapBW(src, mask, rgb, scores) {
+    var tHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+    for (var i = 0; i < (src.data.data.length / 4); ++i) {
+      var row = Math.floor((i / mask.data.width) / 5);
+      var col = Math.floor((i % mask.data.width) / 5);
+      var sIndex = (row * (mask.data.width / 5)) + col;
+      var sHSL = rgbToHsl(
+        src.data.data[4 * i],
+        src.data.data[4 * i + 1],
+        src.data.data[4 * i + 2]);
+
+      scores[sIndex] += colorDistance(sHSL, tHSL, diffMult);
+    }
+
+    var high = 0;
+    var low = 999;
+    for (var i = 0; i < scores.length; ++i) {
+      high = Math.max(scores[i], high);
+      low = Math.min(scores[i], low);
+    }
+
+    for (var i = 0; i < (src.data.data.length / 4); ++i) {
+      var row = Math.floor((i / mask.data.width) / 5);
+      var col = Math.floor((i % mask.data.width) / 5);
+      var sIndex = (row * (mask.data.width / 5)) + col;
+
+      var score = scores[sIndex];
+      var color = abs((3 * Math.log(score)) * (511 / (3 * Math.log(high))));
+
+      mask.data.data[4 * i] = 256 - abs(color - 256);
+      mask.data.data[4 * i + 1] = 256 - abs(color - 256);
+      mask.data.data[4 * i + 2] = 256 - abs(color - 256);
       mask.data.data[4 * i + 3] = 0xFF;
     }
   }
