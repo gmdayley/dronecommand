@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="crosshairs"></div>
+    <div id="droneStream" style="width: 640px; height: 360px"></div>
+    <div id="mask"></div>
+
+    <div class="controls top-left">
+        <button data-drone="takeoff"><i class="fa fa-rocket"></i></button>
+        <button data-drone="land"><i class="fa fa-stop"></i></button>
+        <button data-drone="disableEmergency"><i class="fa fa-medkit"></i></button>
+        <!--<button data-drone="tweet"><i class="fa fa-twitter"></i></button>-->
+    </div>
+
+    <div class="controls bottom-left">
+        <button data-drone="spinCCW"><i class="fa fa-rotate-left"></i></button>
+        <button data-drone="spinCW"><i class="fa fa-rotate-right"></i></button>
+        <button data-drone="flip"><i class="fa fa-retweet"></i></button>
+    </div>
+
+    <div class="controls top-right">
+        <button data-drone="up"><i class="fa fa-chevron-circle-up"></i></button>
+        <button data-drone="down"><i class="fa fa-chevron-circle-down"></i></button>
+    </div>
+
+    <div class="controls bottom-right">
+        <button data-drone="front"><i class="fa fa-arrow-up"></i></button>
+        <button data-drone="back"><i class="fa fa-arrow-down"></i></button>
+        <button data-drone="left"><i class="fa fa-arrow-left"></i></button>
+        <button data-drone="right"><i class="fa fa-arrow-right"></i></button>
+    </div>
+
+    <div class="info top-middle">
+        <div class="altitude">???</div>
+        <div class="battery">???</div>
+    </div>
+
+    <div class="help">
+        <ul>
+            <li>Space - TakeOff/Land</li>
+            <li>Up Arrow - Altitude Up</li>
+            <li>Down Arrow - Altitude Down</li>
+            <li>Left Arrow - Spin Clockwise</li>
+            <li>Right Arrow - Spin Counter Clockwise</li>
+            <li>W - Forward</li>
+            <li>S - Backward</li>
+            <li>A - Left</li>
+            <li>D - Right</li>
+            <li>Shift - Flip</li>
+            <li>F - Fire Left</li>
+            <li>J - Fire Right</li>
+        </ul>
+    </div>
+</div>
