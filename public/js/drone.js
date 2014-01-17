@@ -29,6 +29,10 @@ socket.on('drone-data', function(data) {
   if (!targettingInitialized) initTargetting();
 });
 
+socket.on('target', function(data) {
+  console.log(data);
+});
+
 [upBtn, downBtn, frontBtn, backBtn, leftBtn, rightBtn, spinClockwiseBtn, spinCounterClockwiseBtn].forEach(function(btn) {
   btn.mouseup(function() {
     socket.emit('drone-command', {
@@ -151,6 +155,11 @@ $(document).keydown(function(e) {
     case 16:
       socket.emit('drone-command', {
         command: 'flip'
+      });
+      break;
+    case 16:
+      socket.emit('drone-command', {
+        command: 'disableEmergency'
       });
       break;
     case 32:

@@ -11,7 +11,7 @@
 //var rgb = {r: 190, g: 212, b: 141}; // Tennis Ball in the light
 //var rgb = {r: 146, g: 85, b: 95}; // Vivint bag in hotel room
 //var rgb = {r: 116, g: 46, b: 7}; // Vivint shirt in the gym
-var rgb = {r: 36, g: 85, b: 96}; // Green shirt in the room
+var rgb = {r: 124, g: 139, b: 124}; // Green shirt in the room
 
 //var hsl = [3, 0, 40];
 var diffMult = [1000, 10, 100];
@@ -41,6 +41,8 @@ var TargetMotion = function(video) {
 
   var src = createCanvas(width, height);
   var mask = createCanvas(width, height);
+
+  var checkdir = true;
 
   // --- Public Functions ------------------------------------------------------
 
@@ -86,7 +88,22 @@ var TargetMotion = function(video) {
     mask.data = src.ctx.createImageData(width, height);
     var m = getMode();
     var tgt = m(src, mask, rgb, scores, scores2);
-    if (socket) socket.emit('target', tgt);
+    if (tgt && socket && checkdir) {
+
+      var dir = ((tgt.x - 90) > 0)? 'spinCCW' : 'spinCW';
+      if (Math.abs(tgt.x - 90) > 10) {
+        checkdir = false;
+        socket.emit('drone-command', {
+          command: dir
+        });
+        setTimeout(function() {
+          checkdir = true;
+          socket.emit('drone-command', {
+            command: 'stop'
+          });
+        }, 250);
+      }
+    }
 
     mask.ctx.putImageData(mask.data, 0, 0);
 

@@ -159,6 +159,11 @@ angular.module('dronecommand')
                 command: 'flip'
               });
               break;
+            case 16:
+              socket.emit('drone-command', {
+                command: 'disableEmergency'
+              });
+              break;
             case 32:
               socket.emit('drone-command', {
                 command: (_isOn)? 'takeoff' : 'land'
